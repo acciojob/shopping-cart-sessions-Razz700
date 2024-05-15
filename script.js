@@ -11,7 +11,8 @@ const products = [
 
 // DOM elements
 const productList = document.getElementById("product-list");
-
+let cpyarray=[];
+let arr=[];
 // Render product list
 function renderProducts() {
   products.forEach((product) => {
@@ -23,11 +24,10 @@ function renderProducts() {
 
 // Render cart list
 function renderCart() {
-	 if (sessionStorage.getItem('cartItems')!=null) {
+	    if (sessionStorage.getItem('cartItems')!=null) {
         const a=document.createElement('ul');
      a.innerHTML=sessionStorage.getItem('cartItems');
      a.setAttribute('id','cart-list')
-    // console.log(a);
 const cartList=document.getElementById('cart-list');
 cartList.replaceWith(a);  
     }
@@ -45,25 +45,37 @@ function addToCart(id) {
    li.setAttribute('id',`0${num}`);
         cartList.appendChild(li);
     num++; 
-   console.log(JSON.stringify(cartList),'strings');
-  // console.log(cartList);
-    sessionStorage.clear();
-    sessionStorage.setItem(`cartItems`,cartList.innerHTML);
-    } 
+    cpyarray.push(products[id-1]);
+     } 
    });
+   arr=[];
+   cpyarray.forEach((item)=>{
+if (item!=null) {
+    arr.push(item);}
+ });
+   sessionStorage.setItem('cart',JSON.stringify(arr));
+   sessionStorage.setItem(`cartItems`,cartList.innerHTML);
+
 }
 
 // Remove item from cart
 function removeFromCart(a) {
-	 const cartList=document.getElementById('cart-list');
+	const cartList=document.getElementById('cart-list');
     const remove=document.querySelectorAll(`#cart-list>li`);
    remove.forEach((item,i)=>{
      if (item.getAttribute(`id`)==`0${a}`) {
         item.remove();
+        delete cpyarray[a];
        }
     });
-   // console.log(cartList.innerHTML);
+   arr=[];
+   cpyarray.forEach((item)=>{
+if (item!=null) {
+    arr.push(item);
+}
+   });
     sessionStorage.clear();
+    sessionStorage.setItem('cart',JSON.stringify(arr));
     sessionStorage.setItem('cartItems',cartList.innerHTML);
 
 }
