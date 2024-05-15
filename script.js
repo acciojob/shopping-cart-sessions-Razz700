@@ -26,7 +26,8 @@ function renderCart() {
 	 if (sessionStorage.getItem('cartItems')!=null) {
         const a=document.createElement('ul');
      a.innerHTML=sessionStorage.getItem('cartItems');
-     //console.log(a);
+     a.setAttribute('id','cart-list')
+    // console.log(a);
 const cartList=document.getElementById('cart-list');
 cartList.replaceWith(a);  
     }
@@ -45,7 +46,7 @@ function addToCart(id) {
         cartList.appendChild(li);
     num++; 
    console.log(JSON.stringify(cartList),'strings');
-   console.log(cartList);
+  // console.log(cartList);
     sessionStorage.clear();
     sessionStorage.setItem(`cartItems`,cartList.innerHTML);
     } 
@@ -54,15 +55,16 @@ function addToCart(id) {
 
 // Remove item from cart
 function removeFromCart(a) {
-	const remove=document.querySelectorAll(`#cart-list>li`);
+	 const cartList=document.getElementById('cart-list');
+    const remove=document.querySelectorAll(`#cart-list>li`);
    remove.forEach((item,i)=>{
      if (item.getAttribute(`id`)==`0${a}`) {
         item.remove();
        }
     });
-    console.log(cartList);
+   // console.log(cartList.innerHTML);
     sessionStorage.clear();
-    sessionStorage.setItem('cartItems',JSON.stringify(cartList));
+    sessionStorage.setItem('cartItems',cartList.innerHTML);
 
 }
 
