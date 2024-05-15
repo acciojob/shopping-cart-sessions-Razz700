@@ -16,22 +16,64 @@ const productList = document.getElementById("product-list");
 function renderProducts() {
   products.forEach((product) => {
     const li = document.createElement("li");
-    li.innerHTML = `${product.name} - $${product.price} <button class="add-to-cart-btn" data-id="${product.id}">Add to Cart</button>`;
+    li.innerHTML = `${product.name} - $${product.price} <button onclick='addToCart(${product.id})' class="add-to-cart-btn" data-id="${product.id}">Add to Cart</button>`;
     productList.appendChild(li);
   });
 }
 
 // Render cart list
-function renderCart() {}
+function renderCart() {
+	 if (sessionStorage.getItem('cartItems')!=null) {
+        const a=document.createElement('ul');
+     a.innerHTML=sessionStorage.getItem('cartItems');
+     //console.log(a);
+const cartList=document.getElementById('cart-list');
+cartList.replaceWith(a);  
+    }
+
+}
 
 // Add item to cart
-function addToCart(productId) {}
+let num=0;
+function addToCart(id) {
+	const cartList=document.getElementById('cart-list');
+   const li = document.createElement("li");
+   products.forEach((prod,i)=>{
+    if (prod.id==id) {
+        li.innerHTML = `${prod.name} - $${prod.price} <button onclick='removeFromCart(${num})' class="remove-to-cart-btn" id=${num} data-id="${prod.id}">Remove</button>`;
+   li.setAttribute('id',`0${num}`);
+        cartList.appendChild(li);
+    num++; 
+   console.log(JSON.stringify(cartList),'strings');
+   console.log(cartList);
+    sessionStorage.clear();
+    sessionStorage.setItem(`cartItems`,cartList.innerHTML);
+    } 
+   });
+}
 
 // Remove item from cart
-function removeFromCart(productId) {}
+function removeFromCart(a) {
+	const remove=document.querySelectorAll(`#cart-list>li`);
+   remove.forEach((item,i)=>{
+     if (item.getAttribute(`id`)==`0${a}`) {
+        item.remove();
+       }
+    });
+    console.log(cartList);
+    sessionStorage.clear();
+    sessionStorage.setItem('cartItems',JSON.stringify(cartList));
+
+}
 
 // Clear cart
-function clearCart() {}
+function clearCart() {
+	const clear=document.querySelectorAll(`#cart-list>li`);
+  clear.forEach((item)=>{
+    item.remove();
+  });
+  sessionStorage.clear();
+}
 
 // Initial render
 renderProducts();
